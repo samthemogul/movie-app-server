@@ -9,15 +9,19 @@ export const validateUser = (
   try {
     const schema = Joi.object({
       name: Joi.string().alphanum().min(3).max(30).required(),
-      password: Joi.string().pattern(
-        new RegExp(
-          /^(?=(?:.[A-Z]){2})(?=(?:.[a-z]){3})(?=(?:.\d){2})(?=(?:.[!@#$%^&*()_+|~=`{}\[\]:";'<>?,./\\-]){1}).{8,}$/
+      password: Joi.string()
+        .pattern(
+          new RegExp(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/
+          )
         )
-      ),
-      email: Joi.string().email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "net"] },
-      }),
+        ,
+      email: Joi.string()
+        .email({
+          minDomainSegments: 2,
+          tlds: { allow: ["com", "net"] },
+        })
+        ,
     });
     const payload = req.body;
     const { error } = schema.validate(payload);
