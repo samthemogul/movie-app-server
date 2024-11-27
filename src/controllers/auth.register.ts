@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import User from "../models/user.model";
+import Watchlist from "../models/watchlist.model";
 
 export const registerUser = async (
   req: Request,
@@ -39,18 +40,19 @@ export const registerUser = async (
         email,
       });
 
-      res.status(201).json({
+      await Watchlist.create({
+        userId:newUser._id,
+      })
+
+      const reqUser = {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
-      });
-      if (!newUser) {
-        throw new Error("User could not be created");
-      }
+      };
+      req["user"] = reqUser;
+      next();
     }
   } catch (error) {
     next(error);
   }
 };
-
-export default registerUser;

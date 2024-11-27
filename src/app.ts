@@ -12,6 +12,7 @@ import dotenv from "dotenv";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import authRoutes from "./routes/auth.routes";
 import mongoose from "mongoose";
+import watchlistRoutes from "./routes/watchlist.routes";
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use(
 );
 
 app.use("/auth", authRoutes);
+app.use('/watchlist', watchlistRoutes)
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: err.message });
