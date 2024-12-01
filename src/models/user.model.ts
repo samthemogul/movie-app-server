@@ -3,6 +3,8 @@ interface IUser {
   name: string;
   email: string;
   password: string;
+  streakCount: number;
+  lastWatch: Date
 }
 
 const UserSchema = new mongoose.Schema<IUser>(
@@ -23,6 +25,14 @@ const UserSchema = new mongoose.Schema<IUser>(
       required: true,
       min: 8,
     },
+    streakCount: {
+      type: Number,
+      default: 0
+    },
+    lastWatch: {
+      type: Date,
+      default: Date.now()
+    }
   },
   { timestamps: true }
 );

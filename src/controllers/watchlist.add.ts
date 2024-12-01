@@ -10,21 +10,36 @@ export const addMovie = async (
   try {
     const { tmdbId, title, description, genres, year } = req.body;
     const { userId } = req.params;
-    const watchlist = await Watchlist.findOne({
-      userId: userId,
-    });
-    await Movie.create({
-      tmdbId,
-      title,
-      description,
-      genres,
-      year,
-      watchlist: watchlist._id,
-    });
-    const watchlistMovies = await Movie.find({
-      watchlist: watchlist._id,
-    });
-    res.status(200).json({ watchlistMovies });
+
+    // Find or create the user's watchlist
+    let watchlist = await Watchlist.findOne({ userId });
+    if (!watchlist) {
+      watchlist = await Watchlist.create({ userId, movies: [] });
+    }
+
+    // Check if the movie already exists in the movies collection
+    let movie = await Movie.findOne({ tmdbId });
+    if (!movie) {
+      movie = await Movie.create({
+        tmdbId,
+        title,
+        description,
+        genres,
+        year,
+      });
+    }
+
+    // Avoid adding duplicate movie IDs to the watchlist
+    if (!watchlist.movies.includes(movie.id)) {
+      watchlist.movies.push(movie.id);
+      await watchlist.save();
+    }
+
+    // Fetch the full movie details for all movies in the watchlist
+    const watchListMovies = await Promise.all(
+      watchlist.movies.map((id) => Movie.findById(id))
+    );
+    res.status(200).json({ watchListMovies });
   } catch (error) {
     next(error);
   }

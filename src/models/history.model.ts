@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-interface IWatchlist {
+interface IHistory {
   id: string;
   userId: string;
   movies: string[];
 }
 
-const WatchlistSchema = new mongoose.Schema<IWatchlist>(
+const HistorySchema = new mongoose.Schema<IHistory>(
   {
     userId: { type: String, required: true },
     movies: [
@@ -18,8 +18,8 @@ const WatchlistSchema = new mongoose.Schema<IWatchlist>(
   { timestamps: true }
 );
 
-const Watchlist = mongoose.model<IWatchlist>(
-  "Watchlist",
-  WatchlistSchema
+const History = mongoose.model<IHistory>(
+  "History",
+  HistorySchema
 );
-export default Watchlist;
+export default History;
