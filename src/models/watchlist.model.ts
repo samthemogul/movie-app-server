@@ -11,7 +11,7 @@ const WatchlistSchema = new mongoose.Schema<IWatchlist>(
     movies: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Movie", // Reference to the Movie model
+        ref: "Movie",
       },
     ],
   },

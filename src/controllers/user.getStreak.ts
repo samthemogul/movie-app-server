@@ -76,23 +76,3 @@ export const addStreak = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
-// export const addStreak = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const userId = req.params.userId;
-//     const user = await User.findById(userId);
-//     const now = new Date();
-//     now.setHours(0, 0, 0, 0)
-//     const lastWatchDate = new Date(user.lastWatch)
-//     lastWatchDate.setHours(0, 0, 0, 0)
-//     const yesterday = new Date()
-//     yesterday.setDate(now.getDate() - 1)
-//     yesterday.setHours(0, 0, 0, 0)
-//     if(lastWatchDate.getTime() === yesterday.getTime()) {
-
-//     }
-//   } catch (error) {}
-// };
